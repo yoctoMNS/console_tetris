@@ -88,11 +88,15 @@ public class GameManager {
                 } else {
                     switch (viewStage.getStageCell(x, y)) {
                     case Stage.CELL_NONE:
-                        System.out.print("　");
+                        System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_BLACK + "　");
                         break;
 
                     case Stage.CELL_BLOCK:
-                        System.out.print("□ ");
+                        System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_GREEN + "  ");
+                        break;
+
+                    case Stage.CELL_WALL:
+                        System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_MAGENTA + "  ");
                         break;
 
                     default:
@@ -102,6 +106,7 @@ public class GameManager {
             }
             System.out.println();
         }
+        System.out.println(ConsoleColor.COLOR_RESET);
     }
 
 

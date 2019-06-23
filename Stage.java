@@ -3,8 +3,9 @@ public class Stage {
     public static final int STAGE_WIDTH = 10 + Block.BLOCK_WIDTH*2;
     public static final int ACTUAL_STAGE_WIDTH = (Stage.STAGE_WIDTH-1) - (Block.BLOCK_WIDTH-1);
     public static final int ACTUAL_STAGE_HEIGHT = (Stage.STAGE_HEIGHT) - (Block.BLOCK_HEIGHT-1);
-    public static final int CELL_NONE =  0;
-    public static final int CELL_BLOCK =  1;
+    public static final int CELL_NONE = 0;
+    public static final int CELL_BLOCK = 1;
+    public static final int CELL_WALL = 2;
 
     private int[][] field;
 
@@ -27,11 +28,11 @@ public class Stage {
             field[y][x] = CELL_NONE;
 
             for (int i=1; i<=Block.BLOCK_WIDTH; ++i) {
-                field[y][Block.BLOCK_WIDTH-i] = CELL_BLOCK;
-                field[y][STAGE_WIDTH-i] = CELL_BLOCK;
+                field[y][Block.BLOCK_WIDTH-i] = CELL_WALL;
+                field[y][STAGE_WIDTH-i] = CELL_WALL;
             }
             for (int i=1; i<=Block.BLOCK_HEIGHT; ++i) {
-                field[STAGE_HEIGHT-i][x] = CELL_BLOCK;
+                field[STAGE_HEIGHT-i][x] = CELL_WALL;
             }
         }
     }
