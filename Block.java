@@ -1,3 +1,6 @@
+import java.util.Random;
+
+
 public class Block {
     public static final int BLOCK_HEIGHT = 4;
     public static final int BLOCK_WIDTH  = 4;
@@ -9,6 +12,7 @@ public class Block {
     private int[][] block;
     private BlockType type;
     private BlockRotation rot;
+    private Random random;
 
 
     public Block() {
@@ -18,7 +22,8 @@ public class Block {
 
     private void init() {
         block = new int[BLOCK_HEIGHT][BLOCK_WIDTH];
-        type = BlockType.BLOCK_TYPE_I;
+        random = new Random();
+        type = getRandomBlockType();
         rot = BlockRotation.BLOCK_ROT_0;
         x = FALL_START_X;
         y = FALL_START_Y;
@@ -35,10 +40,18 @@ public class Block {
     }
 
 
-    // TODO
     public void reset() {
         x = FALL_START_X;
         y = FALL_START_Y;
+        type = getRandomBlockType();
+        rot = BlockRotation.BLOCK_ROT_0;
+        makeBlock();
+    }
+
+
+    private BlockType getRandomBlockType() {
+        int nextType = random.nextInt(BlockType.BLOCK_TYPE_MAX.getValue());
+        return BlockType.getValue(nextType);
     }
 
 
