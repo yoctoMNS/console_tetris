@@ -83,6 +83,18 @@ public class Block {
     }
 
 
+    public void margeBlock(Block next) {
+        x = FALL_START_X;
+        y = FALL_START_Y;
+        setType(next.getType());
+        setRot(next.getRot());
+        for (int y=0; y<BLOCK_HEIGHT; ++y)
+        for (int x=0; x<BLOCK_WIDTH; ++x) {
+            block[y][x] = next.getBlockCell(x, y);           
+        }
+    }
+
+
     public int getBlockCell(int x, int y) {
         return block[y][x];
     }

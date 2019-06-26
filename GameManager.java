@@ -12,6 +12,7 @@ public class GameManager {
     private Stage viewStage;
     private Stage bufStage;
     private Block block;
+    private Block nextBlock;
     private ConsoleController clear;
     private MyNativeHook hook;
     private long preTime;
@@ -74,6 +75,7 @@ public class GameManager {
         viewStage = new Stage();
         bufStage = new Stage();
         block = new Block();
+        nextBlock = new Block();
         clear = new ConsoleController("/bin/bash", "-c", "clear");
         hook = new MyNativeHook();
     }
@@ -81,6 +83,29 @@ public class GameManager {
 
     private void draw() {
         System.out.println("\u001b[0;0f");
+
+        // 次に出現するブロックを描画
+        System.out.println("NEXT");
+        for (int y=0; y<Block.BLOCK_HEIGHT; ++y) {
+            for (int x=0; x<Block.BLOCK_WIDTH; ++x) {
+                switch (nextBlock.getBlockCell(x, y)) {
+                case Stage.CELL_NONE:
+                    System.out.print("  ");
+                    break;
+
+                case Stage.CELL_BLOCK:
+                    System.out.print("□ ");
+                    break;
+
+                default:
+                    System.out.print("ER");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        // ステージを描画
         for (int y=0; y<=Stage.ACTUAL_STAGE_HEIGHT; ++y) {
             for (int x=Block.BLOCK_WIDTH-1; x<Stage.ACTUAL_STAGE_WIDTH+1; ++x) {
                 if (debugMode) {
@@ -88,15 +113,18 @@ public class GameManager {
                 } else {
                     switch (viewStage.getStageCell(x, y)) {
                     case Stage.CELL_NONE:
-                        System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_BLACK + "　");
+                        // System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_BLACK + "　");
+                        System.out.print("  ");
                         break;
 
                     case Stage.CELL_BLOCK:
-                        System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_GREEN + "  ");
+                        // System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_GREEN + "  ");
+                        System.out.print("□ ");
                         break;
 
                     case Stage.CELL_WALL:
-                        System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_MAGENTA + "  ");
+                        // System.out.print(ConsoleColor.BACK_COLOR_BRIGHT_MAGENTA + "  ");
+                        System.out.print("＃");
                         break;
 
                     default:
@@ -197,10 +225,11 @@ public class GameManager {
 
         if (isOneSecondLater()) {
             if (!isBottomCollision(block)) {
-                    block.fall();
+                block.fall();
             } else {
                 fixBlock();
-                block.reset();
+                block.margeBlock(nextBlock);
+                nextBlock.reset();
             }
         }
     }
